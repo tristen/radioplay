@@ -2,13 +2,15 @@ var m, o;
 var stationOverlay = function (item) {
     $('<a></a>').addClass('station-point ' + item.station).appendTo('#canada').click(function () {
         $('.station-point').removeClass('active');
-        var content = '<h2>' + item.station + '<h2>'
-                    + 'Songs Tracked: ' + item.count
+        var content = '<h2>' + item.station + '</h2>'
+                    + '<span>Songs Tracked: ' + item.count + '</span>'
                     + '<h3> Where </h3>'
-                    + 'Canada: ' + item.cdn_play
-                    + 'USA: ' + item.us_play
-                    + 'United Kingdom: ' + item.uk_play
-                    + 'International: ' + item.int_play;
+                    + '<ul>'
+                    + '<li>Canada: ' + item.cdn_play + '</li>'
+                    + '<li>USA: ' + item.us_play + '</li>'
+                    + '<li>United Kingdom: ' + item.uk_play + '</li>'
+                    + '<li>International: ' + item.int_play + '</li>'
+                    + '</ul>';
         $('#station').html(content);
         $('#station').show();
         $(this).addClass('active');
