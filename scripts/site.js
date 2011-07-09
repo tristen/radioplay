@@ -5,6 +5,7 @@ var stationOverlay = function (item) {
         var content = '<h2>' + item.station + '</h2>'
                     + '<span>Songs Tracked: ' + item.count + '</span>'
                     + '<h3> Where </h3>'
+                    + item.location
                     + '<ul>'
                     + '<li>Canada: ' + item.cdn_play + '</li>'
                     + '<li>USA: ' + item.us_play + '</li>'
@@ -27,8 +28,8 @@ var mapSetup = function () {
         var mm = com.modestmaps;
 
         m = new mm.Map('map', new com.modestmaps.WaxProvider({
-            baseUrl: 'http://a.tiles.mapbox.com/tristen/',
-            layerName: 'base_layer',
+            baseUrl: 'http://a.tiles.mapbox.com/mapbox/',
+            layerName: 'world-glass',
             zoomRange: [4, 8]
         }));
         m.setCenterZoom(
@@ -53,20 +54,15 @@ $(function () {
     $('a.cfbx').trigger('click');
 
     $('div#map-overlay').bind('addedtooltip', function (e, tooltip, context, evt) {
-        var $tooltip = $(tooltip);
-        var $mapdiv = $('div#map');
+        var tooltip = $(tooltip);
         // Position far outside of the page in order for it to get a height
-        $tooltip.offset({ top: -10000 });
-        $tooltip.bind('selectstart', function (e) {
-            e.stopPropagation();
-        });
-        $tooltip.append('<div class="arrowsprite">&nbsp;</div>');
-        $('body').append($tooltip);
-        // Reposition correctly the first time
-        $tooltip.offset({
-            top: evt.pageY - $tooltip.outerHeight(true) - 10,
-            left: evt.pageX - ($tooltip.outerWidth(true) / 2),
-            'z-index': 100
+        tooltip.offset({ top: -10000 });
+        tooltip.bind('selectstart', function (e) { e.stopPropagation(); });
+        tooltip.append('<div class="arrowsprite">&nbsp;</div>');
+        $('body').append(tooltip);
+        tooltip.offset({
+            top: evt.pageY - tooltip.outerHeight(true) - 10,
+            left: evt.pageX - (tooltip.outerWidth(true) / 2)
         });
         // continue to follow the mouse.
         return true;
