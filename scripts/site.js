@@ -28,8 +28,8 @@ var mapSetup = function () {
         var mm = com.modestmaps;
 
         m = new mm.Map('map', new com.modestmaps.WaxProvider({
-            baseUrl: 'http://a.tiles.mapbox.com/mapbox/',
-            layerName: 'world-glass',
+            baseUrl: 'http://a.tiles.mapbox.com/tristen/',
+            layerName: 'base-layer',
             zoomRange: [4, 8]
         }));
         m.setCenterZoom(
