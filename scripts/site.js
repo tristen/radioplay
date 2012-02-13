@@ -1,70 +1,56 @@
-var m, o;
-var stationOverlay = function (item) {
-    $('<a></a>').addClass('station-point ' + item.station).appendTo('#canada').click(function () {
-        $('.station-point').removeClass('active');
-        var content = '<h2>' + item.station + '</h2>'
-                    + '<span>Songs Tracked: ' + item.count + '</span>'
-                    + '<h3> Where </h3>'
-                    + item.location
-                    + '<ul>'
-                    + '<li>Canada: ' + item.cdn_play + '</li>'
-                    + '<li>USA: ' + item.us_play + '</li>'
-                    + '<li>United Kingdom: ' + item.uk_play + '</li>'
-                    + '<li>International: ' + item.int_play + '</li>'
-                    + '</ul>';
-        $('#station').html(content);
-        $('#station').show();
-        $(this).addClass('active');
-        o.setProvider(new com.modestmaps.WaxProvider({
-            baseUrl: 'http://a.tiles.mapbox.com/tristen/',
-            layerName: item.station,
-            filetype: '.png',
-            zoomRange: [4, 8]
-        }));
+var mm = com.modestmaps;
+var m;
+var baseLayer = 'tristen.base-layer';
+var stationLayer = 'tristen.cfbx';
+
+function drawMap() {
+
+    wax.tilejson('http://api.tiles.mapbox.com/v3/' + baseLayer + ',' + stationLayer + '.jsonp', function(tilejson) {
+        tilejson.minzoom = 4;
+        tilejson.maxzoom = 8;
+
+        m = new mm.Map('map', new wax.mm.connector(tilejson), null, [
+            new mm.DragHandler(),
+            new mm.TouchHandler(),
+            new mm.DoubleClickHandler(),
+            new mm.MouseWheelHandler()
+        ]);
+
+        m.draw();
+        m.setCenterZoom(new mm.Location(50, -80), 4);
+        wax.mm.zoomer(m, tilejson).appendTo(m.parent);
+        wax.mm.interaction(m, tilejson);
     });
-};
+}
 
-var mapSetup = function () {
-        var mm = com.modestmaps;
+$(document).ready(function (){
+    // Initialize the map.
+    drawMap();
 
-        m = new mm.Map('map', new com.modestmaps.WaxProvider({
-            baseUrl: 'http://a.tiles.mapbox.com/tristen/',
-            layerName: 'base-layer',
-            zoomRange: [4, 8]
-        }));
-        m.setCenterZoom(
-        new com.modestmaps.Location(50, -80), 4);
+    $('#canada a').click(function(e) {
+        e.preventDefault();
+        $('#canada a').removeClass('active');
+        $(this).addClass('active');
 
-        o = new mm.Map('map-overlay', new com.modestmaps.WaxProvider({
-            baseUrl: 'http://a.tiles.mapbox.com/tristen/',
-            layerName: 'cfbx',
-            zoomRange: [4, 8]
-        })).zoomer().interaction();
-        o.setCenterZoom(
-        new com.modestmaps.Location(50, -80), 4);
+        stationLayer = $(this).attr('data-layer');
+        // With the station variable set as data-layer attribute name
+        // of the anchor link the user has clicked, redraw the map.
+        drawMap();
 
-        o.addCallback('drawn', function (modestmap, e) {
-            m.setCenterZoom(o.getCenter(), o.getZoom());
-        });
-    };
+        var stationName = stationLayer.split('.')[1];
+        var s = station[stationName]; // Current station object from data.js
+        var stationContent = '<h2>' + s.name + ' <small>' + s.location + '</small></h2>'
+                        + '<p>Songs tracked: ' + s.count + '</p>'
+                        + '<h3>Where:</h3>'
+                        + '<ul>'
+                        + '<li>Canada: ' + s.cdn_play + '</li>'
+                        + '<li>USA: ' + s.us_play + '</li>'
+                        + '<li>United Kingdom: ' + s.uk_play + '</li>'
+                        + '<li>International: ' + s.int_play + '</li>'
+                        + '</ul>';
 
-$(function () {
-    _(stations).map(stationOverlay);
-    mapSetup();
-    $('a.cfbx').trigger('click');
-
-    $('div#map-overlay').bind('addedtooltip', function (e, tooltip, context, evt) {
-        var tooltip = $(tooltip);
-        // Position far outside of the page in order for it to get a height
-        tooltip.offset({ top: -10000 });
-        tooltip.bind('selectstart', function (e) { e.stopPropagation(); });
-        tooltip.append('<div class="arrowsprite">&nbsp;</div>');
-        $('body').append(tooltip);
-        tooltip.offset({
-            top: evt.pageY - tooltip.outerHeight(true) - 10,
-            left: evt.pageX - (tooltip.outerWidth(true) / 2)
-        });
-        // continue to follow the mouse.
-        return true;
+        // Swap out the station information block
+        // content with the station selected.
+        $('#station').html(stationContent);
     });
 });

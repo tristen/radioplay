@@ -1,27 +1,37 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+    <meta charset=utf-8 />
     <title>Radio Play in Canadian College Stations</title>
-    <script type='text/javascript' src='http://use.typekit.com/ugq7jfz.js'></script>
-    <script type='text/javascript'>try{Typekit.load();}catch(e){}</script>
-    <script src='scripts/data.js'></script>
-    <script src='scripts/jquery-1.5.min.js'></script>
-    <script src='scripts/modestmaps.js'></script>
-    <script src='scripts/wax.mm.min.js'></script>
-    <script src='scripts/site.js'></script>
-    <link rel='stylesheet' href='css/reset.css' type='text/css'>
-    <link rel='stylesheet' href='css/style.css' type='text/css'>
+    <link rel='stylesheet' href='site.css'>
   </head>
   <body>
   <div id='header'>
-    <div class='limiter clearfix'>
-      <h1>Radio Play in <br />Canadian College Stations</h1>
-      <div id='canada'></div>
+    <h1>Radio Play in <br />Canadian College Stations</h1>
+    <div id='canada'>
+      <a href='#' class='cfbx active' data-layer='tristen.cfbx'>cfbx</a>
+      <a href='#' class='ciut' data-layer='tristen.ciut'>ciut</a>
+      <a href='#' class='cjlo' data-layer='tristen.cjlo'>cjlo</a>
+      <a href='#' class='cjsw' data-layer='tristen.cjsw'>cjsw</a>
+      <a href='#' class='cfmh' data-layer='tristen.cfmh'>cfmh</a>
     </div>
   </div>
   <div id='map'></div>
-  <div id='map-overlay'></div>
-  <div id='station'></div>
+  <div id='station'>
+    <h2>CFBX <small>Kamloops, BC</small></h2>
+    <p>Songs tracked: 1190</p>
+    <h3>Where:</h3>
+    <ul>
+      <li>Canada: 746</li>
+      <li>USA: 376</li>
+      <li>United Kingdom: 28</li>
+      <li>International: 39</li>
+    </ul>
+  </div>
+  <script src='scripts/data.js'></script>
+  <script src='scripts/modestmaps.min.js'></script>
+  <script src='scripts/wax.mm.min.js'></script>
+  <script src='scripts/jquery.min.js'></script>
+  <script src='scripts/site.js'></script>
   </body>
 </html>
